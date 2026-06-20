@@ -41,9 +41,9 @@ Built with vanilla HTML, CSS, and JavaScript — no frameworks, no fuss.
 
 ## Origin
 
-Made as a Father's Day gift 🎁 — because some dads deserve more than a card. This one's for a Springsteen fan who probably knows every word to *Thunder Road* and isn't afraid to prove it.
+Made as a Father's Day gift! Dad, this one's for you.
 
-Happy Father's Day, Dad. 🌹
+Happy Father's Day :)
 
 ---
 
