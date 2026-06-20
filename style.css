@@ -420,8 +420,7 @@ main {
 }
 .btn-primary:hover { background: var(--red-hot); }
 
-.share-row { width: 100%; }
-.btn-share {
+.btn-new-game {
   width: 100%;
   font-family: var(--font-display);
   font-size: 0.85rem;
@@ -434,7 +433,7 @@ main {
   cursor: pointer;
   transition: background 0.2s;
 }
-.btn-share:hover { background: rgba(212,160,23,0.15); }
+.btn-new-game:hover { background: rgba(212,160,23,0.15); }
 
 /* ── FOOTER ──────────────────────────────────────────────── */
 footer {
