@@ -1,0 +1,472 @@
+/* ============================================================
+   BOSSLE – Bruce Springsteen Heardle
+   Palette: asphalt, cream, jersey-red, amber-gold
+   ============================================================ */
+
+:root {
+  --asphalt:   #1a1a1a;
+  --gravel:    #2c2c2c;
+  --steel:     #3f3f3f;
+  --smoke:     #888;
+  --cream:     #f0ead8;
+  --parchment: #e0d6be;
+  --red:       #c0392b;
+  --red-hot:   #e74c3c;
+  --gold:      #d4a017;
+  --gold-lit:  #f0c040;
+
+  --font-display: 'Barlow Condensed', sans-serif;
+  --font-body:    'Barlow', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; }
+
+body {
+  background: var(--asphalt);
+  color: var(--cream);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.012) 2px,
+      rgba(255,255,255,0.012) 4px
+    );
+}
+
+/* ── HEADER ──────────────────────────────────────────────── */
+header {
+  border-bottom: 2px solid var(--red);
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--gravel);
+  position: relative;
+}
+
+.header-inner { display: flex; flex-direction: column; gap: 2px; }
+
+.logo-block {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.logo-eye {
+  font-size: 1.1rem;
+  filter: grayscale(1) brightness(2);
+  opacity: 0.7;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  color: var(--gold);
+  text-shadow: 0 0 24px rgba(212,160,23,0.4);
+  line-height: 1;
+}
+
+.tagline {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--smoke);
+}
+
+.how-btn {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: var(--cream);
+  background: transparent;
+  border: 1px solid var(--steel);
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.how-btn:hover { border-color: var(--gold); color: var(--gold); }
+
+/* ── MODAL ───────────────────────────────────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 100;
+  display: none;
+}
+.modal-overlay.open { display: flex; }
+
+.modal {
+  background: var(--gravel);
+  border: 1px solid var(--red);
+  padding: 36px 32px;
+  max-width: 420px;
+  width: 90%;
+  position: relative;
+}
+
+.modal h2 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 900;
+  letter-spacing: 0.15em;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.modal ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+.modal ul li {
+  padding-left: 18px;
+  position: relative;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  color: var(--parchment);
+}
+.modal ul li::before {
+  content: '▸';
+  color: var(--red);
+  position: absolute;
+  left: 0;
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px; right: 16px;
+  background: none; border: none;
+  color: var(--smoke);
+  font-size: 1rem;
+  cursor: pointer;
+}
+.modal-close:hover { color: var(--cream); }
+
+/* ── MAIN ────────────────────────────────────────────────── */
+main {
+  flex: 1;
+  max-width: 560px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 28px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── ATTEMPT DOTS ────────────────────────────────────────── */
+.attempts-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.attempt-dot {
+  width: 36px;
+  height: 10px;
+  background: var(--steel);
+  transition: background 0.3s;
+}
+.attempt-dot.correct  { background: var(--gold); }
+.attempt-dot.wrong    { background: var(--red); }
+.attempt-dot.skipped  { background: var(--smoke); }
+.attempt-dot.active   { background: var(--cream); }
+
+/* ── GUESSES LIST ────────────────────────────────────────── */
+.guesses-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.guess-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  border-left: 3px solid transparent;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.guess-entry.correct  { border-color: var(--gold); background: rgba(212,160,23,0.1); color: var(--gold); }
+.guess-entry.wrong    { border-color: var(--red);  background: rgba(192,57,43,0.1);  color: #e08070; }
+.guess-entry.skipped  { border-color: var(--smoke);background: rgba(136,136,136,0.1);color: var(--smoke); font-style: italic; }
+
+.guess-icon { font-size: 0.9rem; flex-shrink: 0; }
+
+/* ── PLAYER CARD ─────────────────────────────────────────── */
+.player-card {
+  background: var(--gravel);
+  border: 1px solid var(--steel);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.waveform {
+  width: 100%;
+  position: relative;
+  height: 64px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.wave-bars {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  height: 100%;
+}
+
+.wave-bar {
+  flex: 1;
+  background: var(--steel);
+  border-radius: 1px;
+  transition: background 0.3s, height 0.1s;
+  min-width: 2px;
+}
+.wave-bar.active { background: var(--red); }
+.wave-bar.played { background: var(--gold); }
+
+.clip-label {
+  position: absolute;
+  top: 4px; right: 0;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--smoke);
+}
+
+.play-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 2px solid var(--red);
+  background: transparent;
+  color: var(--cream);
+  font-size: 1.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s, transform 0.1s;
+  flex-shrink: 0;
+}
+.play-btn:hover  { background: var(--red); transform: scale(1.05); }
+.play-btn:active { transform: scale(0.97); }
+.play-btn.playing { border-color: var(--gold); }
+.play-btn.playing .play-icon { color: var(--gold); }
+
+/* ── INPUT AREA ──────────────────────────────────────────── */
+.input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.autocomplete-wrap {
+  position: relative;
+}
+
+.guess-input {
+  width: 100%;
+  background: var(--gravel);
+  border: 1px solid var(--steel);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  padding: 12px 16px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.guess-input::placeholder { color: var(--smoke); }
+.guess-input:focus { border-color: var(--red); }
+
+.autocomplete-dropdown {
+  position: absolute;
+  top: 100%; left: 0; right: 0;
+  background: var(--gravel);
+  border: 1px solid var(--steel);
+  border-top: none;
+  max-height: 220px;
+  overflow-y: auto;
+  z-index: 50;
+  display: none;
+}
+.autocomplete-dropdown.open { display: block; }
+
+.autocomplete-item {
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.15s;
+}
+.autocomplete-item:hover,
+.autocomplete-item.highlighted { background: rgba(192,57,43,0.2); color: var(--gold); }
+
+.autocomplete-item .song-title { font-weight: 600; }
+.autocomplete-item .song-album { font-size: 0.78rem; color: var(--smoke); margin-top: 1px; }
+
+.action-btns {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-skip {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  background: transparent;
+  border: 1px solid var(--steel);
+  color: var(--smoke);
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-skip:hover { border-color: var(--smoke); color: var(--cream); }
+
+.btn-submit {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  background: var(--red);
+  border: none;
+  color: var(--cream);
+  padding: 12px 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-submit:hover:not(:disabled) { background: var(--red-hot); }
+.btn-submit:disabled { opacity: 0.35; cursor: not-allowed; }
+
+/* ── RESULT CARD ─────────────────────────────────────────── */
+.result-card {
+  background: var(--gravel);
+  border: 1px solid var(--gold);
+  padding: 28px 24px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.result-card.hidden { display: none; }
+
+.result-icon { font-size: 2.4rem; }
+
+.result-text {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+}
+
+.result-song {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--cream);
+  letter-spacing: 0.04em;
+}
+
+.result-album {
+  font-size: 0.8rem;
+  color: var(--smoke);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.btn-primary {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  background: var(--red);
+  border: none;
+  color: var(--cream);
+  padding: 12px 24px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s;
+}
+.btn-primary:hover { background: var(--red-hot); }
+
+.share-row { width: 100%; }
+.btn-share {
+  width: 100%;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  background: transparent;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-share:hover { background: rgba(212,160,23,0.15); }
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 0.72rem;
+  color: var(--steel);
+  border-top: 1px solid var(--gravel);
+  letter-spacing: 0.05em;
+}
+
+/* ── SCROLLBAR ───────────────────────────────────────────── */
+.autocomplete-dropdown::-webkit-scrollbar { width: 4px; }
+.autocomplete-dropdown::-webkit-scrollbar-track { background: var(--gravel); }
+.autocomplete-dropdown::-webkit-scrollbar-thumb { background: var(--steel); }
+
+/* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 420px) {
+  h1 { font-size: 1.9rem; }
+  .attempt-dot { width: 28px; }
+}
+
+/* ── ANIMATIONS ──────────────────────────────────────────── */
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+.play-btn.playing { animation: pulse 1.2s ease-in-out infinite; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.guess-entry { animation: fadeIn 0.25s ease; }
+.result-card:not(.hidden) { animation: fadeIn 0.3s ease; }

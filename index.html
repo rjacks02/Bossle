@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bossle — A Bruce Springsteen Heardle</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <div class="logo-block">
+        <span class="logo-eye">👁</span>
+        <h1>BOSSLE</h1>
+      </div>
+      <p class="tagline">Guess the Springsteen song</p>
+    </div>
+    <button class="how-btn" id="howBtn">HOW TO PLAY</button>
+  </header>
+
+  <!-- How to play modal -->
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <h2>HOW TO PLAY</h2>
+      <ul>
+        <li>Listen to the opening clip of a Bruce Springsteen song.</li>
+        <li>Each wrong guess or skip reveals a longer clip.</li>
+        <li>You get <strong>6 attempts</strong>. Fewest guesses wins.</li>
+        <li>Clips: 1s → 2s → 4s → 8s → 16s → 30s</li>
+        <li>A new song is available every day!</li>
+      </ul>
+      <button class="btn-primary" id="modalOk">LET'S GO</button>
+    </div>
+  </div>
+
+  <main>
+    <!-- Attempt dots -->
+    <div class="attempts-row" id="attemptsRow">
+      <div class="attempt-dot" id="dot-0"></div>
+      <div class="attempt-dot" id="dot-1"></div>
+      <div class="attempt-dot" id="dot-2"></div>
+      <div class="attempt-dot" id="dot-3"></div>
+      <div class="attempt-dot" id="dot-4"></div>
+      <div class="attempt-dot" id="dot-5"></div>
+    </div>
+
+    <!-- Guesses list -->
+    <div class="guesses-list" id="guessesList"></div>
+
+    <!-- Player -->
+    <div class="player-card">
+      <div class="waveform" id="waveform">
+        <div class="wave-bars" id="waveBars"></div>
+        <div class="clip-label" id="clipLabel">CLIP 1 · 1 SEC</div>
+      </div>
+      <button class="play-btn" id="playBtn">
+        <span class="play-icon" id="playIcon">▶</span>
+      </button>
+    </div>
+
+    <!-- Input -->
+    <div class="input-area" id="inputArea">
+      <div class="autocomplete-wrap">
+        <input
+          type="text"
+          id="guessInput"
+          class="guess-input"
+          placeholder="Search for a Springsteen song…"
+          autocomplete="off"
+        />
+        <div class="autocomplete-dropdown" id="autocompleteDropdown"></div>
+      </div>
+      <div class="action-btns">
+        <button class="btn-skip" id="skipBtn">SKIP</button>
+        <button class="btn-submit" id="submitBtn" disabled>SUBMIT GUESS</button>
+      </div>
+    </div>
+
+    <!-- Result card (hidden until game over) -->
+    <div class="result-card hidden" id="resultCard">
+      <div class="result-icon" id="resultIcon"></div>
+      <div class="result-text" id="resultText"></div>
+      <div class="result-song" id="resultSong"></div>
+      <div class="result-album" id="resultAlbum"></div>
+      <button class="btn-primary" id="listenFullBtn">LISTEN ON YOUTUBE</button>
+      <div class="share-row">
+        <button class="btn-share" id="shareBtn">SHARE RESULT</button>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Made with ❤️ for The Boss · Not affiliated with Bruce Springsteen</p>
+  </footer>
+
+
+  <script src="songs.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
