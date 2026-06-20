@@ -94,13 +94,19 @@ function animateWave(playing) {
   const bars = document.querySelectorAll('.wave-bar');
   if (playing) {
     const duration = CLIP_DURATIONS[Math.min(attempt, CLIP_DURATIONS.length - 1)];
+    const startTime = performance.now();
     waveInterval = setInterval(() => {
-      const progress = Math.min(audioEl.currentTime / duration, 1);
+      const elapsed = (performance.now() - startTime) / 1000; // seconds
+      const progress = Math.min(elapsed / duration, 1);
       const playedCount = Math.floor(progress * bars.length);
       bars.forEach((bar, i) => {
         bar.classList.toggle('played', i < playedCount);
         bar.classList.toggle('active', i >= playedCount && Math.random() > 0.6);
       });
+      if (progress >= 1) {
+        clearInterval(waveInterval);
+        bars.forEach(b => b.classList.remove('active'));
+      }
     }, 60);
   } else {
     clearInterval(waveInterval);
