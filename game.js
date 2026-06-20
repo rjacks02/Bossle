@@ -297,7 +297,7 @@ function showResult(won) {
   const messages = [
     'BORN TO KNOW IT!',
     'TRAMPS LIKE YOU!',
-    'YOU SHOWED 'EM!',
+    'YOU SHOWED \'EM!',
     'DARKNESS LIFTED!',
     'BARELY MADE IT!',
     'GOT THERE!',
