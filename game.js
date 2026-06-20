@@ -88,16 +88,24 @@ function buildWaveBars() {
   }
 }
 
+// ── WAVE BARS ────────────────────────────────────────────────
 let waveInterval = null;
 function animateWave(playing) {
   const bars = document.querySelectorAll('.wave-bar');
   if (playing) {
-    let frame = 0;
+    let startTime = null;
+    const duration = CLIP_DURATIONS[Math.min(attempt, CLIP_DURATIONS.length - 1)];
+    const totalBars = bars.length; // 60
+
     waveInterval = setInterval(() => {
-      frame++;
+      const elapsed = audioEl ? audioEl.currentTime : 0;
+      // How far through the clip are we? (0.0 → 1.0)
+      const progress = Math.min(elapsed / duration, 1);
+      const playedCount = Math.floor(progress * totalBars);
+
       bars.forEach((bar, i) => {
-        if (i < frame * 0.5) bar.classList.add('played');
-        bar.classList.toggle('active', Math.random() > 0.6 && i > frame * 0.3);
+        bar.classList.toggle('played', i < playedCount);
+        bar.classList.toggle('active', i >= playedCount && Math.random() > 0.6);
       });
     }, 60);
   } else {
